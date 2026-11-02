@@ -1,28 +1,45 @@
 import PhotosUI
 import SwiftUI
 import UniformTypeIdentifiers
+import UIKit
 
-struct UploadView: View {
+struct CaptureView: View {
     @EnvironmentObject private var flow: AppFlowModel
     @State private var pickerItem: PhotosPickerItem?
     @State private var showImporter = false
+    @State private var showCamera = false
+
+    private var seconds: Int {
+        flow.blueprint?.shootGuidance.durationSec ?? 15
+    }
 
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: 20) {
-                Text("Referans video")
+            VStack(alignment: .leading, spacing: 18) {
+                Text("Kendi çekimin")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
 
-                Text("Viral videoyu Photos veya Files’dan seç. Trend feed / link scrape yok — sadece senin dosyan.")
+                Text("Tek düz talking-head klip kaydet veya yükle (~\(seconds) sn).")
                     .font(.system(size: 15, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
+
+                Button {
+                    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                        showCamera = true
+                    } else {
+                        flow.errorMessage = "Simülatörde kamera yok — Photos veya Files kullan."
+                    }
+                } label: {
+                    labelRow(title: "Kameradan çek", subtitle: "Ön kamera · dikey")
+                }
+                .buttonStyle(.plain)
 
                 PhotosPicker(
                     selection: $pickerItem,
                     matching: .videos,
                     photoLibrary: .shared()
                 ) {
-                    labelRow(title: "Photos’tan seç", subtitle: "Kayıtlı kısa video")
+                    labelRow(title: "Photos’tan seç", subtitle: "Önceden çekilmiş klip")
                 }
                 .onChange(of: pickerItem) { _, item in
                     guard let item else { return }
@@ -40,21 +57,24 @@ struct UploadView: View {
                     Text(error)
                         .font(.footnote)
                         .foregroundStyle(.red)
-                        .padding(.top, 4)
                 }
 
                 Spacer()
-
-                Text("API: \(APIClient.baseURL.absoluteString)")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
             }
             .padding(24)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button("Geri") { flow.reset() }
+                    Button("Rehber") { flow.goShootGuidance() }
                 }
+            }
+            .sheet(isPresented: $showCamera) {
+                CameraPicker { url in
+                    showCamera = false
+                    guard let url else { return }
+                    Task { await flow.submitUserClip(fileURL: url) }
+                }
+                .ignoresSafeArea()
             }
             .fileImporter(
                 isPresented: $showImporter,
@@ -64,7 +84,7 @@ struct UploadView: View {
                 switch result {
                 case .success(let urls):
                     guard let url = urls.first else { return }
-                    Task { await flow.analyze(fileURL: url) }
+                    Task { await flow.submitUserClip(fileURL: url) }
                 case .failure(let error):
                     flow.errorMessage = error.localizedDescription
                 }
@@ -97,26 +117,57 @@ struct UploadView: View {
                 flow.errorMessage = "Video alınamadı"
                 return
             }
-            await flow.analyze(fileURL: movie.url)
+            await flow.submitUserClip(fileURL: movie.url)
         } catch {
             flow.errorMessage = error.localizedDescription
         }
     }
 }
 
-/// Temporary file copy for PhotosPicker transferable video.
-struct VideoFileTransfer: Transferable {
-    let url: URL
+struct CameraPicker: UIViewControllerRepresentable {
+    var onFinish: (URL?) -> Void
 
-    static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(contentType: .movie) { video in
-            SentTransferredFile(video.url)
-        } importing: { received in
-            let temp = FileManager.default.temporaryDirectory
-                .appendingPathComponent("va-ref-\(UUID().uuidString).\(received.file.pathExtension)")
-            try? FileManager.default.removeItem(at: temp)
-            try FileManager.default.copyItem(at: received.file, to: temp)
-            return Self(url: temp)
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.mediaTypes = ["public.movie"]
+        picker.cameraDevice = .front
+        picker.videoQuality = .typeHigh
+        picker.delegate = context.coordinator
+        picker.modalPresentationStyle = .fullScreen
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onFinish: onFinish)
+    }
+
+    final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+        let onFinish: (URL?) -> Void
+
+        init(onFinish: @escaping (URL?) -> Void) {
+            self.onFinish = onFinish
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            onFinish(nil)
+        }
+
+        func imagePickerController(
+            _ picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+        ) {
+            if let url = info[.mediaURL] as? URL {
+                let dest = FileManager.default.temporaryDirectory
+                    .appendingPathComponent("va-capture-\(UUID().uuidString).\(url.pathExtension)")
+                try? FileManager.default.removeItem(at: dest)
+                try? FileManager.default.copyItem(at: url, to: dest)
+                onFinish(dest)
+            } else {
+                onFinish(nil)
+            }
         }
     }
 }

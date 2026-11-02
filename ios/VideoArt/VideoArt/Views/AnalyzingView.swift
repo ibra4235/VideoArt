@@ -17,6 +17,16 @@ struct AnalyzingView: View {
                 Text(flow.sourceFilename)
                     .font(.footnote)
                     .foregroundStyle(.tertiary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+            }
+            if flow.sourceKind == "link_stub" {
+                Text("Link indirme stub — sentetik referans analiz ediliyor.")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
             }
             Spacer()
             Text("Format blueprint çıkarılıyor — kredi yakılmaz.")

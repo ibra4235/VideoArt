@@ -6,8 +6,12 @@ venv/
 .env
 backend/data/uploads/*
 backend/data/jobs/*
+backend/data/outputs/*
+backend/data/clips/*
 !backend/data/uploads/.gitkeep
 !backend/data/jobs/.gitkeep
+!backend/data/outputs/.gitkeep
+!backend/data/clips/.gitkeep
 
 # macOS / Xcode
 .DS_Store

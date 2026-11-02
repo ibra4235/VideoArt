@@ -10,7 +10,6 @@
 		F0AEDFD9DE6247988129072F /* VideoArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB722CAD9E154BCD822B4C5B /* VideoArtApp.swift */; };
 		9FFA32C4EBE5430E94C21FED /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACED26720784AC7A6584D56 /* RootView.swift */; };
 		6310CE1D276643DC8B7D440F /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF15A4A93DE49BEA31DDB66 /* WelcomeView.swift */; };
-		338336312BC44D5DAB426A96 /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9298BD5BB1CD414E89F8526F /* UploadView.swift */; };
 		52C3A379819E4874BD27306C /* AnalyzingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5936B74C76543DA8DEC64BA /* AnalyzingView.swift */; };
 		588BFA7FB3AD4391BE8EABDB /* BlueprintReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DA77D0FBC04007AEAE3212 /* BlueprintReviewView.swift */; };
 		7FBB205FC9F044A1A043A97E /* Blueprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80751459FDA24893B51ED7DB /* Blueprint.swift */; };
@@ -18,6 +17,11 @@
 		A0AFA46F70DF4D32881C916B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D727250234994655B8731082 /* APIClient.swift */; };
 		D473885DC8364AE38F15E4D6 /* AppFlowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A81652FB34C76B2F9C980 /* AppFlowModel.swift */; };
 		64EA30D0B58C4D53A06756B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87FAA774FF7A46BAA3D3AE5D /* Assets.xcassets */; };
+		82C73E4E810B47C3BDFCB888 /* ReferenceInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A11F6F2C224D71A33E8B7A /* ReferenceInputView.swift */; };
+		B57143125A534A949E4F1BFB /* ShootGuidanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6E415006A247C9AFA181DB /* ShootGuidanceView.swift */; };
+		EEB8CABD2F8C46459A996A51 /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1732DE02C1444033AD5A53FD /* CaptureView.swift */; };
+		91D18EB01017489E82DCC5AB /* RemakingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8828B16EF3490388D425EA /* RemakingView.swift */; };
+		9B3CCA9AAC9D4D21A7B21F9F /* PreviewExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD49AACD0B5444B82935620 /* PreviewExportView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +29,6 @@
 		FB722CAD9E154BCD822B4C5B /* VideoArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoArtApp.swift; sourceTree = "<group>"; };
 		7ACED26720784AC7A6584D56 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		ABF15A4A93DE49BEA31DDB66 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		9298BD5BB1CD414E89F8526F /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
 		E5936B74C76543DA8DEC64BA /* AnalyzingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzingView.swift; sourceTree = "<group>"; };
 		35DA77D0FBC04007AEAE3212 /* BlueprintReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintReviewView.swift; sourceTree = "<group>"; };
 		80751459FDA24893B51ED7DB /* Blueprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blueprint.swift; sourceTree = "<group>"; };
@@ -34,6 +37,11 @@
 		554A81652FB34C76B2F9C980 /* AppFlowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowModel.swift; sourceTree = "<group>"; };
 		998C1E19BEEF4FB5B2B7A52B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87FAA774FF7A46BAA3D3AE5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		99A11F6F2C224D71A33E8B7A /* ReferenceInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceInputView.swift; sourceTree = "<group>"; };
+		9B6E415006A247C9AFA181DB /* ShootGuidanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShootGuidanceView.swift; sourceTree = "<group>"; };
+		1732DE02C1444033AD5A53FD /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
+		0C8828B16EF3490388D425EA /* RemakingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemakingView.swift; sourceTree = "<group>"; };
+		6CD49AACD0B5444B82935620 /* PreviewExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewExportView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,8 +107,12 @@
 			children = (
 				7ACED26720784AC7A6584D56 /* RootView.swift */,
 				ABF15A4A93DE49BEA31DDB66 /* WelcomeView.swift */,
-				9298BD5BB1CD414E89F8526F /* UploadView.swift */,
 				E5936B74C76543DA8DEC64BA /* AnalyzingView.swift */,
+				99A11F6F2C224D71A33E8B7A /* ReferenceInputView.swift */,
+				9B6E415006A247C9AFA181DB /* ShootGuidanceView.swift */,
+				1732DE02C1444033AD5A53FD /* CaptureView.swift */,
+				0C8828B16EF3490388D425EA /* RemakingView.swift */,
+				6CD49AACD0B5444B82935620 /* PreviewExportView.swift */,
 				35DA77D0FBC04007AEAE3212 /* BlueprintReviewView.swift */,
 			);
 			path = Views;
@@ -179,8 +191,12 @@
 				F0AEDFD9DE6247988129072F /* VideoArtApp.swift in Sources */,
 				9FFA32C4EBE5430E94C21FED /* RootView.swift in Sources */,
 				6310CE1D276643DC8B7D440F /* WelcomeView.swift in Sources */,
-				338336312BC44D5DAB426A96 /* UploadView.swift in Sources */,
 				52C3A379819E4874BD27306C /* AnalyzingView.swift in Sources */,
+				82C73E4E810B47C3BDFCB888 /* ReferenceInputView.swift in Sources */,
+				B57143125A534A949E4F1BFB /* ShootGuidanceView.swift in Sources */,
+				EEB8CABD2F8C46459A996A51 /* CaptureView.swift in Sources */,
+				91D18EB01017489E82DCC5AB /* RemakingView.swift in Sources */,
+				9B3CCA9AAC9D4D21A7B21F9F /* PreviewExportView.swift in Sources */,
 				588BFA7FB3AD4391BE8EABDB /* BlueprintReviewView.swift in Sources */,
 				7FBB205FC9F044A1A043A97E /* Blueprint.swift in Sources */,
 				0409EF54213B4C2CA1CCC430 /* JobModels.swift in Sources */,

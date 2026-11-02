@@ -37,6 +37,8 @@ if not DATA_DIR.is_absolute():
 
 UPLOADS_DIR = DATA_DIR / "uploads"
 JOBS_DIR = DATA_DIR / "jobs"
+OUTPUTS_DIR = DATA_DIR / "outputs"
+CLIPS_DIR = DATA_DIR / "clips"
 HOST = _env("HOST", "0.0.0.0") or "0.0.0.0"
 PORT = int(_env("PORT", "8000") or "8000")
 ALLOW_ANONYMOUS = _env("ALLOW_ANONYMOUS", "true").lower() in {"1", "true", "yes"}
@@ -45,3 +47,5 @@ ALLOW_ANONYMOUS = _env("ALLOW_ANONYMOUS", "true").lower() in {"1", "true", "yes"
 def ensure_data_dirs() -> None:
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     JOBS_DIR.mkdir(parents=True, exist_ok=True)
+    OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
+    CLIPS_DIR.mkdir(parents=True, exist_ok=True)
