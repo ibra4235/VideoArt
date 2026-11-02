@@ -24,6 +24,9 @@ class SourceInfo(BaseModel):
     duration_ms: int = 0
     aspect: str = "9:16"
     fps_hint: float = 30.0
+    source_kind: str = "file"  # file | link_stub
+    source_url: Optional[str] = None
+    platform: Optional[str] = None
 
 
 class SceneCaption(BaseModel):
@@ -65,6 +68,23 @@ class ExportInfo(BaseModel):
     max_duration_ms: int = 30000
 
 
+class ShootGuidance(BaseModel):
+    """Flat single-take guidance — user records one plain talking-head clip."""
+
+    mode: str = "flat_talking_head"
+    title: str = "Tek plan çekim"
+    instruction: str = "Otur, kameraya bak, gülümse, konuş"
+    duration_sec: int = 15
+    tips: list[str] = Field(
+        default_factory=lambda: [
+            "Telefonu dikey tut (9:16)",
+            "Yüzün çerçevede net görünsün",
+            "Arka plan sade olsun",
+            "Kendi cümlelerinle konuş — metni ezberleme",
+        ]
+    )
+
+
 class Blueprint(BaseModel):
     version: int = 1
     source: SourceInfo
@@ -72,9 +92,27 @@ class Blueprint(BaseModel):
     scenes: list[Scene] = Field(default_factory=list)
     audio: AudioInfo = Field(default_factory=AudioInfo)
     export: ExportInfo = Field(default_factory=ExportInfo)
+    shoot_guidance: ShootGuidance = Field(default_factory=ShootGuidance)
 
 
-JobStatus = Literal["queued", "processing", "completed", "failed"]
+JobStatus = Literal[
+    "queued",
+    "processing",
+    "completed",
+    "failed",
+    "awaiting_clip",
+    "remaking",
+    "draft_ready",
+]
+
+
+class RemakeResult(BaseModel):
+    draft_path: str
+    duration_ms: int = 0
+    gen_stub_scenes: list[str] = Field(default_factory=list)
+    montage: str = "ffmpeg_concat_zoompan"
+    captions: str = "drawtext_burn_in"
+    note: str = ""
 
 
 class JobRecord(BaseModel):
@@ -88,11 +126,20 @@ class JobRecord(BaseModel):
     error: Optional[str] = None
     blueprint: Optional[Blueprint] = None
     analyzer: str = "stub"
+    source_kind: str = "file"  # file | link_stub
+    source_url: Optional[str] = None
+    platform: Optional[str] = None
+    ingest_note: Optional[str] = None
+    user_clip_path: Optional[str] = None
+    user_clip_filename: Optional[str] = None
+    remake: Optional[RemakeResult] = None
+    draft_path: Optional[str] = None
 
 
 class JobCreateResponse(BaseModel):
     job_id: str
     status: JobStatus
+    ingest_note: Optional[str] = None
 
 
 class JobResponse(BaseModel):
@@ -102,9 +149,20 @@ class JobResponse(BaseModel):
     error: Optional[str] = None
     blueprint: Optional[Blueprint] = None
     analyzer: str = "stub"
+    source_kind: str = "file"
+    source_url: Optional[str] = None
+    platform: Optional[str] = None
+    ingest_note: Optional[str] = None
+    has_user_clip: bool = False
+    remake: Optional[RemakeResult] = None
+    draft_ready: bool = False
 
 
 class BlueprintUpdateRequest(BaseModel):
     """Partial blueprint update — clients typically patch scene captions."""
 
     blueprint: dict[str, Any]
+
+
+class AnalyzeFromLinkRequest(BaseModel):
+    url: str = Field(..., min_length=8, max_length=2048)

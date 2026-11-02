@@ -23,9 +23,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Referans viral videoyu seçmek için fotoğraf kitaplığına erişim gerekir.</string>
+	<string>Referans ve talking-head kliplerini seçmek için fotoğraf kitaplığına erişim gerekir.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>İleride remake çıktısını kaydetmek için kullanılır (bu dilimde yok).</string>
+	<string>Remake draft’ını kaydetmek için kullanılır.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Tek plan talking-head çekimi için kameraya erişim gerekir.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Talking-head sesini kaydetmek için mikrofona erişim gerekir.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>

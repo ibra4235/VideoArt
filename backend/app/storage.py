@@ -5,7 +5,7 @@ from pathlib import Path
 
 import aiofiles
 
-from .config import JOBS_DIR, UPLOADS_DIR, ensure_data_dirs
+from .config import CLIPS_DIR, JOBS_DIR, OUTPUTS_DIR, UPLOADS_DIR, ensure_data_dirs
 from .schemas import JobRecord
 
 
@@ -20,6 +20,29 @@ async def save_upload(job_id: str, filename: str, data: bytes) -> Path:
     async with aiofiles.open(dest, "wb") as f:
         await f.write(data)
     return dest
+
+
+async def save_user_clip(job_id: str, filename: str, data: bytes) -> Path:
+    ensure_data_dirs()
+    safe_name = Path(filename).name or "talking_head.mp4"
+    dest = CLIPS_DIR / f"{job_id}_{safe_name}"
+    async with aiofiles.open(dest, "wb") as f:
+        await f.write(data)
+    return dest
+
+
+def remake_work_dir(job_id: str) -> Path:
+    ensure_data_dirs()
+    path = OUTPUTS_DIR / job_id / "work"
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def draft_path_for(job_id: str) -> Path:
+    ensure_data_dirs()
+    path = OUTPUTS_DIR / job_id
+    path.mkdir(parents=True, exist_ok=True)
+    return path / "draft.mp4"
 
 
 async def write_job(record: JobRecord) -> None:

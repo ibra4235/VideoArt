@@ -27,15 +27,15 @@ struct WelcomeView: View {
                     .font(.system(size: 20, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color(red: 0.55, green: 0.92, blue: 0.78))
 
-                Text("Beğendiğin kısa videoyu dosya olarak yükle. VideoArt formatını çözer; sen kendi çekiminle yeniden üretirsin.")
+                Text("Instagram veya TikTok linkini yapıştır. VideoArt formatı çözer; sen tek düz talking-head çekim yaparsın — kesme, kamera hissi ve caption’ı remake uygular.")
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.white.opacity(0.78))
                     .fixedSize(horizontal: false, vertical: true)
 
                 Button {
-                    flow.goUpload()
+                    flow.goReference()
                 } label: {
-                    Text("Referans video yükle")
+                    Text("Başla")
                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -45,7 +45,7 @@ struct WelcomeView: View {
                 }
                 .padding(.top, 8)
 
-                Text("Bu dilimde Sign in with Apple / abonelik yok (stub auth).")
+                Text("Sign in with Apple / StoreKit bu dilimde yok. Link indirme stub (ToS).")
                     .font(.footnote)
                     .foregroundStyle(.white.opacity(0.45))
 

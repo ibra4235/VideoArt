@@ -2,18 +2,18 @@
 
 iOS-first **format inspiration / your own content** app.
 
-Upload a short viral reference video file → AI analyzes a **blueprint JSON** (scenes, captions, style) → review & edit captions. Remake / gen video / StoreKit are **out of this slice**.
+**Flow (this slice):** paste Instagram/TikTok link *(or file backup)* → analyze → blueprint → flat talking-head shoot guidance → record one clip → remake (montage + caption burn-in + gen stubs) → preview / share.
 
 ## Repo layout
 
 ```
-backend/          FastAPI — upload, analyze job, blueprint persist
-ios/VideoArt/     SwiftUI app — picker → analyze → blueprint review
+backend/          FastAPI — link/file analyze, user clip, FFmpeg remake draft
+ios/VideoArt/     SwiftUI — link → guidance → capture → remake → preview
 ```
 
 ## Prerequisites
 
-- **Backend:** Python 3.10+, `ffmpeg` / `ffprobe` (for duration + optional OpenAI frame sampling)
+- **Backend:** Python 3.10+, `ffmpeg` / `ffprobe`
 - **iOS:** Xcode 15+, iOS 17 SDK, Mac (Simulator or device)
 
 ## Backend (local)
@@ -36,7 +36,7 @@ python -m app
 | `ANALYZER_PROVIDER` | `stub` | `stub` or `openai` |
 | `OPENAI_API_KEY` | — | Required when provider=`openai` |
 | `OPENAI_VISION_MODEL` | `gpt-4o` | Vision chat model |
-| `DATA_DIR` | `./data` | Uploads + job JSON |
+| `DATA_DIR` | `./data` | Uploads, clips, outputs, job JSON |
 | `HOST` / `PORT` | `0.0.0.0` / `8000` | Uvicorn bind |
 | `ALLOW_ANONYMOUS` | `true` | Stub auth; clients may send `X-User-Id` |
 
@@ -44,22 +44,20 @@ python -m app
 
 | Method | Path | Purpose |
 |--------|------|---------|
-| `GET` | `/health` | Liveness + active analyzer |
-| `POST` | `/v1/jobs/analyze` | Multipart `file` → create analyze job |
-| `GET` | `/v1/jobs/{id}` | Poll status + blueprint |
+| `GET` | `/health` | Liveness + features |
+| `POST` | `/v1/jobs/analyze` | Multipart `file` → analyze job |
+| `POST` | `/v1/jobs/analyze-from-link` | JSON `{url}` → **stub** link ingest + analyze |
+| `GET` | `/v1/jobs/{id}` | Poll status + blueprint + remake meta |
 | `PUT` | `/v1/jobs/{id}/blueprint` | Persist edited blueprint JSON |
-
-Blueprint schema matches the MVP doc (`version`, `source`, `global_style`, `scenes[]`, `audio`, `export`).
+| `POST` | `/v1/jobs/{id}/user-clip` | Multipart talking-head clip |
+| `POST` | `/v1/jobs/{id}/remake` | Queue FFmpeg montage + captions + gen stubs |
+| `GET` | `/v1/jobs/{id}/draft` | Download draft MP4 |
 
 ### Smoke test without iOS
 
 ```bash
 # with server running:
-curl -s http://127.0.0.1:8000/health
-# create a tiny test mp4 via ffmpeg, then:
-ffmpeg -y -f lavfi -i color=c=black:s=720x1280:d=3 -c:v libx264 -pix_fmt yuv420p /tmp/ref.mp4
-curl -s -F "file=@/tmp/ref.mp4" http://127.0.0.1:8000/v1/jobs/analyze
-# poll returned job_id until status=completed
+bash backend/scripts/smoke_test.sh
 ```
 
 ## iOS app (local)
@@ -67,9 +65,9 @@ curl -s -F "file=@/tmp/ref.mp4" http://127.0.0.1:8000/v1/jobs/analyze
 1. Start the backend (above).
 2. Open `ios/VideoArt/VideoArt.xcodeproj` in Xcode.
 3. Set your **Team** for signing (`PRODUCT_BUNDLE_IDENTIFIER` = `com.videoart.app`).
-4. **Simulator:** `APIClient.baseURL` defaults to `http://127.0.0.1:8000` (works when backend runs on the same Mac).
-5. **Physical device:** change `APIClient.baseURL` in `ios/VideoArt/VideoArt/Services/APIClient.swift` to your Mac’s LAN IP (e.g. `http://192.168.x.x:8000`).
-6. Run → Hoş geldin → referans seç (Photos/Files) → analiz → blueprint’te caption düzenle → Kaydet.
+4. **Simulator:** `APIClient.baseURL` defaults to `http://127.0.0.1:8000`. Camera unavailable → use Photos/Files for the talking-head clip.
+5. **Physical device:** set `APIClient.baseURL` to your Mac’s LAN IP.
+6. Run → link veya dosya → blueprint → çekim rehberi → klip → remake → önizle / paylaş.
 
 Turkish UI copy is intentional for this slice.
 
@@ -77,20 +75,28 @@ Turkish UI copy is intentional for this slice.
 
 | Area | Status |
 |------|--------|
-| Upload reference video | Works (Photos + Files) |
-| Analyze job + persist blueprint | Works (local JSON files) |
-| Stub analyzer (no API key) | Works — duration-scaled sample scenes |
-| OpenAI vision analyzer | Hook ready — set `ANALYZER_PROVIDER=openai` + `OPENAI_API_KEY` |
-| Blueprint review + caption edit + save | Works |
-| Auth | Stub (`X-User-Id` / anonymous) — no Sign in with Apple |
-| S3 / Postgres / queue workers | Not in slice (local disk) |
-| Gen video, montage, caption burn-in | Stubbed / skipped |
-| StoreKit / pricing | Skipped |
+| Paste IG/TikTok link | Works as **interface + stub** — validates host, synthesizes placeholder reference (no scrape) |
+| File upload backup | Works (Photos + Files) |
+| Analyze → blueprint + `shoot_guidance` | Works (stub analyzer; OpenAI hook optional) |
+| Flat shoot guidance UI | Works — “otur, bak, gülümse, N sn konuş” |
+| Talking-head capture | Works — camera (device) / Photos / Files |
+| Remake montage + mild zoompan | Works (FFmpeg) |
+| Caption burn-in | Works when ffmpeg `drawtext` available; else concat without burn-in |
+| Generative video | **Stub** labeled B-roll clips (no API key) |
+| Preview + ShareLink export | Works (local draft file) |
+| Auth / StoreKit / S3 / Postgres | Stubbed / skipped |
+
+## Limits — Instagram / TikTok ToS
+
+- VideoArt does **not** scrape or download Instagram/TikTok CDN media in this codebase.
+- `analyze-from-link` is a **developer stub** so the product flow can be tested end-to-end. Production must use: user-provided files, Share Extension, or a **licensed / official** API if one exists.
+- Do not market as a “clone” bot. Positioning: **format inspiration / your own content**.
+- Do not copy original platform music tracks into remakes; audio policy = `user_or_licensed_only`.
 
 ## Product language
 
-Do not market as “clone”. Positioning: **format inspiration / your own content**. Caption fields are shown as *ilham metni*.
+Do not market as “clone”. Caption fields are *ilham metni*.
 
-## Next slices (not here)
+## Out of this slice
 
-User clips → gen video provider → FFmpeg assemble + captions → export → StoreKit.
+Sign in with Apple, StoreKit pricing, real gen-video vendor, S3/Postgres/queue workers, Share Extension.

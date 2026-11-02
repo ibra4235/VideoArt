@@ -11,6 +11,7 @@ from ..schemas import (
     GlobalStyle,
     Scene,
     SceneCaption,
+    ShootGuidance,
     SourceInfo,
     UserClip,
 )
@@ -22,7 +23,15 @@ class StubAnalyzer:
 
     name = "stub"
 
-    async def analyze(self, video_path: Path, filename: str) -> Blueprint:
+    async def analyze(
+        self,
+        video_path: Path,
+        filename: str,
+        *,
+        source_kind: str = "file",
+        source_url: str | None = None,
+        platform: str | None = None,
+    ) -> Blueprint:
         duration_ms, fps = probe_duration_ms(video_path)
         if duration_ms <= 0:
             duration_ms = 18000
@@ -49,12 +58,11 @@ class StubAnalyzer:
             "İşte fark",
             "Sen de dene",
         ]
-        guidances = [
-            "Yüz veya ürün close-up, 2–3 sn",
-            "İşlemi gösteren orta plan",
-            "Detay veya sonuç close-up",
-            "Kamera bakışı / CTA jesti",
-        ]
+        # Remake uses ONE flat talking-head clip; per-scene guidance is informational.
+        flat_note = "Tek talking-head çekiminden kesilecek"
+        guidances = [flat_note, flat_note, flat_note, flat_note]
+
+        speak_sec = max(8, min(int(round(usable / 1000.0)), 30))
 
         scenes: list[Scene] = []
         for i in range(4):
@@ -82,7 +90,7 @@ class StubAnalyzer:
                             else None
                         ),
                     ),
-                    user_clip=UserClip(required=True, guidance=guidances[i]),
+                    user_clip=UserClip(required=(i != 1), guidance=guidances[i]),
                 )
             )
 
@@ -93,6 +101,9 @@ class StubAnalyzer:
                 duration_ms=duration_ms,
                 aspect="9:16",
                 fps_hint=fps,
+                source_kind=source_kind,
+                source_url=source_url,
+                platform=platform,
             ),
             global_style=GlobalStyle(
                 mood="energetic",
@@ -103,7 +114,7 @@ class StubAnalyzer:
                     font_hint="bold_sans",
                     emphasis="word_highlight",
                 ),
-                camera_notes="handheld close-ups, quick push-ins",
+                camera_notes="AI applies cuts / mild push-ins from one flat take",
             ),
             scenes=scenes,
             audio=AudioInfo(
@@ -114,5 +125,18 @@ class StubAnalyzer:
             export=ExportInfo(
                 targets=["instagram_reel", "tiktok"],
                 max_duration_ms=30000,
+            ),
+            shoot_guidance=ShootGuidance(
+                mode="flat_talking_head",
+                title="Tek plan çekim",
+                instruction=f"Otur, kameraya bak, gülümse, yaklaşık {speak_sec} saniye konuş",
+                duration_sec=speak_sec,
+                tips=[
+                    "Telefonu dikey tut (9:16)",
+                    "Yüzün çerçevede net görünsün",
+                    "Arka plan sade olsun",
+                    "Kendi cümlelerinle konuş — metni ezberleme",
+                    "Kesme / zoom’u VideoArt remake uygular",
+                ],
             ),
         )
