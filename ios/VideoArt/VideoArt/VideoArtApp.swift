@@ -8,6 +8,7 @@ struct VideoArtApp: App {
         WindowGroup {
             RootView()
                 .environmentObject(flow)
+                .onAppear { flow.onAppOpen() }
         }
     }
 }

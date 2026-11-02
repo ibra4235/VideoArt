@@ -87,4 +87,25 @@ OUT=/tmp/videoart-draft-smoke.mp4
 curl -sf -o "$OUT" "$BASE/v1/jobs/$JOB_ID/draft"
 ls -la "$OUT"
 ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$OUT"
+
+echo "== usage events =="
+ADMIN_TOKEN="${ADMIN_TOKEN:-dev-admin-token}"
+curl -sf -H "Content-Type: application/json" -H "X-User-Id: smoke" \
+  -d '{"event_name":"app_open","metadata":{"source":"smoke"}}' \
+  "$BASE/v1/events" | python3 -m json.tool >/tmp/va_event.json
+# unauth admin must fail
+HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$BASE/admin/events.json" || true)
+[[ "$HTTP_CODE" == "401" ]] || { echo "expected 401 without token, got $HTTP_CODE"; exit 1; }
+EVENTS=$(curl -sf -H "X-Admin-Token: $ADMIN_TOKEN" "$BASE/admin/events.json?limit=50")
+python3 - "$EVENTS" <<'PY'
+import json, sys
+payload = json.loads(sys.argv[1])
+assert payload.get("ok") is True
+names = {e.get("event_name") for e in payload.get("events", [])}
+needed = {"app_open", "file_upload", "link_submit", "analyze_start", "analyze_complete", "clip_upload", "remake_start", "remake_complete"}
+missing = needed - names
+assert not missing, (missing, names)
+print("SMOKE_OK events total=", payload.get("total"), "seen=", sorted(needed))
+PY
+
 echo "SMOKE_ALL_OK"
