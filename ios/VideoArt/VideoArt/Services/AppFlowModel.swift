@@ -30,6 +30,15 @@ final class AppFlowModel: ObservableObject {
 
     let api = APIClient()
 
+    init() {
+        Analytics.shared.userId = api.userId
+        Analytics.shared.baseURL = APIClient.baseURL
+    }
+
+    func onAppOpen() {
+        Analytics.shared.track(.appOpen, metadata: ["platform": "ios"])
+    }
+
     func goReference() {
         errorMessage = nil
         step = .reference
@@ -60,6 +69,11 @@ final class AppFlowModel: ObservableObject {
         sourceKind = "file"
         ingestNote = nil
 
+        Analytics.shared.track(
+            .fileUpload,
+            metadata: ["filename": fileURL.lastPathComponent]
+        )
+
         let accessed = fileURL.startAccessingSecurityScopedResource()
         defer {
             if accessed { fileURL.stopAccessingSecurityScopedResource() }
@@ -68,11 +82,22 @@ final class AppFlowModel: ObservableObject {
         do {
             let created = try await api.uploadAnalyze(fileURL: fileURL)
             jobId = created.jobId
+            Analytics.shared.track(.analyzeStart, jobId: created.jobId, metadata: ["source_kind": "file"])
             statusMessage = "Analiz ediliyor…"
             let job = try await api.pollJob(jobId: created.jobId, terminal: [.completed, .failed])
             try applyAnalyzeResult(job)
+            Analytics.shared.track(
+                .analyzeComplete,
+                jobId: created.jobId,
+                metadata: ["status": job.status.rawValue, "source_kind": "file"]
+            )
         } catch {
             errorMessage = error.localizedDescription
+            Analytics.shared.track(
+                .error,
+                jobId: jobId,
+                metadata: ["stage": "analyze_file", "message": error.localizedDescription]
+            )
             step = .reference
         }
         isBusy = false
@@ -91,15 +116,32 @@ final class AppFlowModel: ObservableObject {
         sourceFilename = trimmed
         sourceKind = "link_stub"
 
+        Analytics.shared.track(.linkSubmit, metadata: ["url_host_hint": String(trimmed.prefix(64))])
+
         do {
             let created = try await api.analyzeFromLink(urlString: trimmed)
             jobId = created.jobId
             ingestNote = created.ingestNote
+            Analytics.shared.track(
+                .analyzeStart,
+                jobId: created.jobId,
+                metadata: ["source_kind": "link_stub"]
+            )
             statusMessage = "Analiz ediliyor…"
             let job = try await api.pollJob(jobId: created.jobId, terminal: [.completed, .failed])
             try applyAnalyzeResult(job)
+            Analytics.shared.track(
+                .analyzeComplete,
+                jobId: created.jobId,
+                metadata: ["status": job.status.rawValue, "source_kind": "link_stub"]
+            )
         } catch {
             errorMessage = error.localizedDescription
+            Analytics.shared.track(
+                .error,
+                jobId: jobId,
+                metadata: ["stage": "analyze_link", "message": error.localizedDescription]
+            )
             step = .reference
         }
         isBusy = false
@@ -132,6 +174,11 @@ final class AppFlowModel: ObservableObject {
             statusMessage = "Blueprint kaydedildi"
         } catch {
             errorMessage = error.localizedDescription
+            Analytics.shared.track(
+                .error,
+                jobId: jobId,
+                metadata: ["stage": "blueprint_save", "message": error.localizedDescription]
+            )
         }
         isBusy = false
     }
@@ -146,11 +193,22 @@ final class AppFlowModel: ObservableObject {
     func goShootGuidance() {
         errorMessage = nil
         step = .shootGuidance
+        Analytics.shared.track(
+            .shootGuidanceView,
+            jobId: jobId,
+            metadata: [
+                "duration_sec": blueprint?.shootGuidance.durationSec ?? 0,
+            ] as [String: Any]
+        )
     }
 
     func goCapture() {
         errorMessage = nil
         step = .capture
+    }
+
+    func trackExportShare() {
+        Analytics.shared.track(.exportShare, jobId: jobId, metadata: ["channel": "share_link"])
     }
 
     func submitUserClip(fileURL: URL) async {
@@ -162,6 +220,12 @@ final class AppFlowModel: ObservableObject {
         isBusy = true
         statusMessage = "Çekim yükleniyor…"
 
+        Analytics.shared.track(
+            .clipUpload,
+            jobId: jobId,
+            metadata: ["filename": fileURL.lastPathComponent]
+        )
+
         let accessed = fileURL.startAccessingSecurityScopedResource()
         defer {
             if accessed { fileURL.stopAccessingSecurityScopedResource() }
@@ -172,6 +236,7 @@ final class AppFlowModel: ObservableObject {
             localUserClipURL = fileURL
             statusMessage = "Remake hazırlanıyor…"
             step = .remaking
+            Analytics.shared.track(.remakeStart, jobId: jobId)
             _ = try await api.startRemake(jobId: jobId)
             let job = try await api.pollJob(
                 jobId: jobId,
@@ -182,11 +247,21 @@ final class AppFlowModel: ObservableObject {
                 throw APIError.http(500, job.error ?? "Remake başarısız")
             }
             remakeNote = job.remake?.note
+            Analytics.shared.track(
+                .remakeComplete,
+                jobId: jobId,
+                metadata: ["duration_ms": job.remake?.durationMs ?? 0] as [String: Any]
+            )
             statusMessage = "Draft indiriliyor…"
             draftLocalURL = try await api.downloadDraft(jobId: jobId)
             step = .preview
         } catch {
             errorMessage = error.localizedDescription
+            Analytics.shared.track(
+                .error,
+                jobId: jobId,
+                metadata: ["stage": "clip_or_remake", "message": error.localizedDescription]
+            )
             step = .capture
         }
         isBusy = false

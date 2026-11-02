@@ -39,6 +39,7 @@ python -m app
 | `DATA_DIR` | `./data` | Uploads, clips, outputs, job JSON |
 | `HOST` / `PORT` | `0.0.0.0` / `8000` | Uvicorn bind |
 | `ALLOW_ANONYMOUS` | `true` | Stub auth; clients may send `X-User-Id` |
+| `ADMIN_TOKEN` | `dev-admin-token` | Protects `/admin/events` (header `X-Admin-Token` or `?token=`) |
 
 ### API (this slice)
 
@@ -52,6 +53,32 @@ python -m app
 | `POST` | `/v1/jobs/{id}/user-clip` | Multipart talking-head clip |
 | `POST` | `/v1/jobs/{id}/remake` | Queue FFmpeg montage + captions + gen stubs |
 | `GET` | `/v1/jobs/{id}/draft` | Download draft MP4 |
+| `POST` | `/v1/events` | Client usage event (fire-and-forget) |
+| `GET` | `/admin/events` | Founder HTML list of recent events (**token required**) |
+| `GET` | `/admin/events.json` | Same as JSON (**token required**) |
+
+### Usage events (founder)
+
+In-house JSONL store under `backend/data/events/events.jsonl` — no third-party analytics.
+
+**Sample event names:** `app_open`, `link_submit`, `file_upload`, `analyze_start`, `analyze_complete`, `shoot_guidance_view`, `clip_upload`, `remake_start`, `remake_complete`, `export_share`, `error`.
+
+**View logs** (server running, default token from `.env.example`):
+
+```bash
+# Browser HTML
+open "http://127.0.0.1:8000/admin/events?token=dev-admin-token"
+
+# Or curl JSON
+curl -s -H "X-Admin-Token: dev-admin-token" \
+  "http://127.0.0.1:8000/admin/events.json" | python3 -m json.tool
+
+# Filter
+curl -s -H "X-Admin-Token: dev-admin-token" \
+  "http://127.0.0.1:8000/admin/events.json?event_name=error&limit=50"
+```
+
+iOS fires these via `Analytics.shared.track(...)` (see `ios/VideoArt/VideoArt/Services/Analytics.swift`). Server also records analyze/remake/file/link/clip milestones.
 
 ### Smoke test without iOS
 
@@ -84,6 +111,7 @@ Turkish UI copy is intentional for this slice.
 | Caption burn-in | Works when ffmpeg `drawtext` available; else concat without burn-in |
 | Generative video | **Stub** labeled B-roll clips (no API key) |
 | Preview + ShareLink export | Works (local draft file) |
+| Usage events + `/admin/events` | Works (local JSONL + `ADMIN_TOKEN`) |
 | Auth / StoreKit / S3 / Postgres | Stubbed / skipped |
 
 ## Limits — Instagram / TikTok ToS

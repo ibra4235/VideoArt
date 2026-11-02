@@ -39,9 +39,13 @@ UPLOADS_DIR = DATA_DIR / "uploads"
 JOBS_DIR = DATA_DIR / "jobs"
 OUTPUTS_DIR = DATA_DIR / "outputs"
 CLIPS_DIR = DATA_DIR / "clips"
+EVENTS_DIR = DATA_DIR / "events"
+EVENTS_FILE = EVENTS_DIR / "events.jsonl"
 HOST = _env("HOST", "0.0.0.0") or "0.0.0.0"
 PORT = int(_env("PORT", "8000") or "8000")
 ALLOW_ANONYMOUS = _env("ALLOW_ANONYMOUS", "true").lower() in {"1", "true", "yes"}
+# Founder admin page/API — send as X-Admin-Token header (or ?token= for HTML browser).
+ADMIN_TOKEN = _env("ADMIN_TOKEN", "dev-admin-token") or "dev-admin-token"
 
 
 def ensure_data_dirs() -> None:
@@ -49,3 +53,4 @@ def ensure_data_dirs() -> None:
     JOBS_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUTS_DIR.mkdir(parents=True, exist_ok=True)
     CLIPS_DIR.mkdir(parents=True, exist_ok=True)
+    EVENTS_DIR.mkdir(parents=True, exist_ok=True)

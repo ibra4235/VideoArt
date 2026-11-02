@@ -47,6 +47,9 @@ struct PreviewExportView: View {
                             .foregroundStyle(Color(red: 0.05, green: 0.12, blue: 0.10))
                             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     }
+                    .simultaneousGesture(TapGesture().onEnded {
+                        flow.trackExportShare()
+                    })
                 }
 
                 Button("Yeni remake") {

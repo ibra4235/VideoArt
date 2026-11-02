@@ -166,3 +166,27 @@ class BlueprintUpdateRequest(BaseModel):
 
 class AnalyzeFromLinkRequest(BaseModel):
     url: str = Field(..., min_length=8, max_length=2048)
+
+
+class EventCreateRequest(BaseModel):
+    """Client-fired usage event (in-house analytics MVP)."""
+
+    event_name: str = Field(..., min_length=1, max_length=64)
+    job_id: Optional[str] = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    timestamp: Optional[str] = None  # client clock optional; server stamps if omitted
+
+
+class EventRecord(BaseModel):
+    id: str
+    user_id: str = "anonymous"
+    event_name: str
+    timestamp: str
+    job_id: Optional[str] = None
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class EventCreateResponse(BaseModel):
+    ok: bool = True
+    id: str
+    event_name: str
