@@ -1,0 +1,302 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F0AEDFD9DE6247988129072F /* VideoArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB722CAD9E154BCD822B4C5B /* VideoArtApp.swift */; };
+		9FFA32C4EBE5430E94C21FED /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACED26720784AC7A6584D56 /* RootView.swift */; };
+		6310CE1D276643DC8B7D440F /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF15A4A93DE49BEA31DDB66 /* WelcomeView.swift */; };
+		338336312BC44D5DAB426A96 /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9298BD5BB1CD414E89F8526F /* UploadView.swift */; };
+		52C3A379819E4874BD27306C /* AnalyzingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5936B74C76543DA8DEC64BA /* AnalyzingView.swift */; };
+		588BFA7FB3AD4391BE8EABDB /* BlueprintReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DA77D0FBC04007AEAE3212 /* BlueprintReviewView.swift */; };
+		7FBB205FC9F044A1A043A97E /* Blueprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80751459FDA24893B51ED7DB /* Blueprint.swift */; };
+		0409EF54213B4C2CA1CCC430 /* JobModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45A2E3F4948D458B80342EB9 /* JobModels.swift */; };
+		A0AFA46F70DF4D32881C916B /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D727250234994655B8731082 /* APIClient.swift */; };
+		D473885DC8364AE38F15E4D6 /* AppFlowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554A81652FB34C76B2F9C980 /* AppFlowModel.swift */; };
+		64EA30D0B58C4D53A06756B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 87FAA774FF7A46BAA3D3AE5D /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		60199A1241FF4DF7B76792D3 /* VideoArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB722CAD9E154BCD822B4C5B /* VideoArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoArtApp.swift; sourceTree = "<group>"; };
+		7ACED26720784AC7A6584D56 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		ABF15A4A93DE49BEA31DDB66 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		9298BD5BB1CD414E89F8526F /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
+		E5936B74C76543DA8DEC64BA /* AnalyzingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzingView.swift; sourceTree = "<group>"; };
+		35DA77D0FBC04007AEAE3212 /* BlueprintReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueprintReviewView.swift; sourceTree = "<group>"; };
+		80751459FDA24893B51ED7DB /* Blueprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blueprint.swift; sourceTree = "<group>"; };
+		45A2E3F4948D458B80342EB9 /* JobModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobModels.swift; sourceTree = "<group>"; };
+		D727250234994655B8731082 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		554A81652FB34C76B2F9C980 /* AppFlowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowModel.swift; sourceTree = "<group>"; };
+		998C1E19BEEF4FB5B2B7A52B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		87FAA774FF7A46BAA3D3AE5D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BA4C5925B61344AEA7DEC680 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1DF5CE694F094C46BB4F5751 = {
+			isa = PBXGroup;
+			children = (
+				202648FB31894BE792395FF2 /* VideoArt */,
+				D1560580CFFE4843A667EA57 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		202648FB31894BE792395FF2 /* VideoArt */ = {
+			isa = PBXGroup;
+			children = (
+				FB722CAD9E154BCD822B4C5B /* VideoArtApp.swift */,
+				24A551D9F6B843D89CA3A960 /* Models */,
+				2164512BF7FA4EF88A67FBA6 /* Services */,
+				8627983473BE4396B5AB4991 /* Views */,
+				87FAA774FF7A46BAA3D3AE5D /* Assets.xcassets */,
+				998C1E19BEEF4FB5B2B7A52B /* Info.plist */,
+			);
+			path = VideoArt;
+			sourceTree = "<group>";
+		};
+		D1560580CFFE4843A667EA57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				60199A1241FF4DF7B76792D3 /* VideoArt.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		24A551D9F6B843D89CA3A960 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				80751459FDA24893B51ED7DB /* Blueprint.swift */,
+				45A2E3F4948D458B80342EB9 /* JobModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2164512BF7FA4EF88A67FBA6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D727250234994655B8731082 /* APIClient.swift */,
+				554A81652FB34C76B2F9C980 /* AppFlowModel.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		8627983473BE4396B5AB4991 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7ACED26720784AC7A6584D56 /* RootView.swift */,
+				ABF15A4A93DE49BEA31DDB66 /* WelcomeView.swift */,
+				9298BD5BB1CD414E89F8526F /* UploadView.swift */,
+				E5936B74C76543DA8DEC64BA /* AnalyzingView.swift */,
+				35DA77D0FBC04007AEAE3212 /* BlueprintReviewView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		373023B05C8F43ECAEEDB095 /* VideoArt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AEC4168C0CD54742B54FB507 /* Build configuration list for PBXNativeTarget "VideoArt" */;
+			buildPhases = (
+				F99D6348032640FEBF27B2DF /* Sources */,
+				BA4C5925B61344AEA7DEC680 /* Frameworks */,
+				09656E0F539C47C3BA91D6DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VideoArt;
+			productName = VideoArt;
+			productReference = 60199A1241FF4DF7B76792D3 /* VideoArt.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BEDD5362DEB7458D919C6F32 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					373023B05C8F43ECAEEDB095 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 3699EFA6BA8C4AED84D6C8BD /* Build configuration list for PBXProject "VideoArt" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = tr;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				tr,
+			);
+			mainGroup = 1DF5CE694F094C46BB4F5751;
+			productRefGroup = D1560580CFFE4843A667EA57 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				373023B05C8F43ECAEEDB095 /* VideoArt */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		09656E0F539C47C3BA91D6DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				64EA30D0B58C4D53A06756B9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F99D6348032640FEBF27B2DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0AEDFD9DE6247988129072F /* VideoArtApp.swift in Sources */,
+				9FFA32C4EBE5430E94C21FED /* RootView.swift in Sources */,
+				6310CE1D276643DC8B7D440F /* WelcomeView.swift in Sources */,
+				338336312BC44D5DAB426A96 /* UploadView.swift in Sources */,
+				52C3A379819E4874BD27306C /* AnalyzingView.swift in Sources */,
+				588BFA7FB3AD4391BE8EABDB /* BlueprintReviewView.swift in Sources */,
+				7FBB205FC9F044A1A043A97E /* Blueprint.swift in Sources */,
+				0409EF54213B4C2CA1CCC430 /* JobModels.swift in Sources */,
+				A0AFA46F70DF4D32881C916B /* APIClient.swift in Sources */,
+				D473885DC8364AE38F15E4D6 /* AppFlowModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A0D3FD658FB4B60A2615C9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		16F6CD52B51849DB938CF4CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A164D78D158746228D18B74E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = VideoArt/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.videoart.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F835E41D26304EDFA4401D44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = VideoArt/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.videoart.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3699EFA6BA8C4AED84D6C8BD /* Build configuration list for PBXProject "VideoArt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A0D3FD658FB4B60A2615C9F /* Debug */,
+				16F6CD52B51849DB938CF4CB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AEC4168C0CD54742B54FB507 /* Build configuration list for PBXNativeTarget "VideoArt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A164D78D158746228D18B74E /* Debug */,
+				F835E41D26304EDFA4401D44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BEDD5362DEB7458D919C6F32 /* Project object */;
+}
